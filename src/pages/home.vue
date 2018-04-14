@@ -13,11 +13,16 @@
               <span>追剧管家系统信息</span>
               <el-button style="float: right; padding: 3px 0" type="text">查看更多</el-button>
             </div>
-            <div  class="text item">
-              <p>当前用户数:</p>
-              <p>昨日活跃用户数量:</p>
-              <p>昨日注册用户数量:</p>
+            <div  class="text item" v-for="(item_i,index_i) in msg" :key="index_i">
+              <p>本站总用户数: {{item_i.members}}</p>
+              <p>今日活跃用户数量: {{item_i.todayAct}}</p>
+              <p>昨日注册用户数量: {{item_i.yesterDayReg}}</p>
               <p>待处理信息:</p>
+              <ul>
+                <li v-for="(item_j,index_j) in item_i.todpMsg" :key="index_j">
+                  {{item_j.things}}
+                </li>
+              </ul>
             </div>
             <div class="clear"></div>
           </el-card>
@@ -32,6 +37,7 @@
               <div class="msg">
                 <p>用户名: {{item.name}}</p>
                 <p>性别: {{item.sex}}</p>
+                <p>年龄: {{item.age}}</p>
                 <p>邮箱: {{item.email}}</p>
                 <p>个人简介: {{item.intro}}</p>
               </div>
@@ -39,9 +45,6 @@
             <div class="clear"></div>
           </el-card>
           <div class="clear"></div>
-        </div>
-        <div class="imgs">
-          <img src="https://i.loli.net/2018/04/11/5acde3825eaf5.jpg" alt="">
         </div>
     </div>
 </div>
@@ -55,25 +58,43 @@ export default {
         {
           name: '是李宇呀丶',
           sex: '男',
+          age:'23',
           email: '335136854@qq.com',
           intro: '全都是泡沫~~~~'
+        }
+      ],
+      msg:[
+        {
+          members:'199',
+          todayAct:'30',
+          yesterDayReg:'20',
+          todpMsg:[
+            {
+              things:'今天也要元气满满哦！'
+            },
+            {
+              things:'今天也要元气满满哦！'
+            },
+            {
+              things:'今天也要元气满满哦！'
+            },
+          ]
         }
       ]
     }
   }
 }
 </script>
-<style type="text/css">
+<style type="text/css" scoped>
   .imgs{
     width: 960px;
     height: 500px;
     margin-top: 20px;
     border-radius: 6px;
   }
-  .imgs img{
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
+  .box{
+    min-height:700px;
+    margin-bottom: 20px;
   }
   .wrap{
     /* height: 600px; */
@@ -88,8 +109,7 @@ export default {
     /* float: right; */
   }
   .admin-msg-card-wrap{
-    height: 100%;
-    height: 200px;
+    height: 500px;
   }
   .avtar{
     float: left;
@@ -111,6 +131,7 @@ export default {
   }
   .systemMsg{
     width: 45%;
+    height: 500px;
     /* float: left; */
   }
 </style>

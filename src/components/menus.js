@@ -1,6 +1,40 @@
 const menus = [
   {id: '0', label: '主页', path: '/', icon: 'fa fa-dashboard'},
   {
+    id: 'userlist',
+    icon: 'fa fa-user-circle-o',
+    label: '用户列表',
+    path: '/userlist'
+  },
+  {
+    id: 'movielist',
+    icon: 'fa fa-folder',
+    label: '电影列表',
+    path: '/movielist'
+  },
+  {
+    id: 'search',
+    icon: 'fa fa-search-minus',
+    label: '搜索',
+    path: '/search',
+    submenu: [
+      {id: 'search-user', path: '/search-user', label: '用户搜索'},
+      {id: 'search-movie', path: '/search-movie', label: '资源搜索'},
+    ]
+  },
+  {
+    id: 'setting',
+    icon: 'fa fa-cog',
+    label: '设置',
+    path: '/setting',
+  },
+  {
+    id: 'about',
+    icon: 'fa fa-smile-o',
+    label: '关于',
+    path: '/about'
+  },
+  {
     id: 'components',
     icon: 'fa fa-microchip',
     label: '组件',
@@ -30,7 +64,6 @@ const menus = [
     label: 'Pages 页面',
     submenu: [
       {id: 'p-data-table', name: 'p-data-table', label: 'Table 表格数据'},
-      {id: 'cnode', name: 'cnode', label: 'Cnode社区'},
       {id: 'p1', name: 'login', label: 'Login 登录'},
       {id: 'p2', name: 'p-login', label: 'Login 登录2'},
       {id: 'p3', name: 'p-register', label: 'Register 注册'},
@@ -51,10 +84,5 @@ const menus = [
     icon: 'fa fa-meetup',
     label: '应用'
   },
-  {
-    id: 'users',
-    icon: 'fa fa-meetup',
-    label: '注册用户'
-  }
 ]
 export default menus

@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 前端端口与后端端口相连  类似于解决跨域
+    proxyTable: {
+      '/api':{
+        target: 'http://localhost:3030/api/',
+        changeOrigin:true,
+        pathWrite:{
+          '^/api':''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

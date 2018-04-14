@@ -22,9 +22,13 @@
           <span class="caret"></span>
         </a>
         <m-dropdown-panel>
-          <m-dropdown-item>用户信息</m-dropdown-item>
-          <m-dropdown-item >修改密码</m-dropdown-item>
-          <m-dropdown-item disabled>注销</m-dropdown-item>
+          <m-dropdown-item>
+            <router-link to="/setting">用户信息</router-link>
+          </m-dropdown-item>
+          <m-dropdown-item >
+            <router-link to="/editPwd">修改密码</router-link>
+          </m-dropdown-item>
+          <!-- <m-dropdown-item disabled>注销</m-dropdown-item> -->
           <div class="test-line"></div>
           <m-dropdown-item name="login">退出账号</m-dropdown-item>
         </m-dropdown-panel>

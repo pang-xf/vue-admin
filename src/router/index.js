@@ -28,12 +28,19 @@ export default new Router({
         {path: '/navbar', name: 'c-navbar', component: page('c-navbar')},
         {path: '/container', name: 'c-container', component: page('c-container')},
         {path: '/demo', name: 'demo', component: page('demo')},
+        // 这里开始是我需要的
         {path: '/404', name: '404', component: page('404')},
-        {path: '/500', name: '500', component: page('500')}
+        {path: '/500', name: '500', component: page('500')},
+        {path: '/userlist', name: 'userlist', component: page('userlist')},
+        {path: '/movielist', name: 'movielist', component: page('movielist')},
+        {path: '/about', name: 'about', component: page('about')},
+        {path: '/setting', name: 'setting', component: page('setting')},
+        {path: '/editPwd', name: 'editPwd', component: page('editPwd')},
+        {path: '/search-user', name: 'search-user', component: page('search-user')},
+        {path: '/search-movie', name: 'search-movie', component: page('search-movie')},
       ]
     },
     {path: '/login', name: 'login', component: page('login')},
-    {path: '/cnode', name: 'cnode', component: page('cnode')},
     // pages
     {path: '/home-login', name: 'p-login', component: page('home-login')},
     {path: '/register', name: 'p-register', component: page('register')},

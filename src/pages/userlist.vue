@@ -34,22 +34,54 @@
       <el-pagination
         background
         layout="prev, pager, next"
-        :total = total
+        :total = userNum
         :page-size = pageSize
         @current-change = changeData
       >
       </el-pagination>
     </div>
+    <!-- 对话框 -->
+    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible" width="500px">
+      <el-form :model="form" ref="form">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="form.name" auto-complete="off" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="头像" :label-width="formLabelWidth">
+          <el-input v-model="form.imgUrl" auto-complete="off" placeholder="请输入图像地址"></el-input>
+        </el-form-item>
+        <el-form-item label="年龄" :label-width="formLabelWidth">
+          <el-input v-model="form.age" auto-complete="off" placeholder="请输入年龄" style="width:150px"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-select v-model="form.sex" placeholder="请选择性别">
+            <el-option label="男" value="man"></el-option>
+            <el-option label="女" value="women"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('form')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters,mapActions  } from 'vuex'
 export default {
   data(){
     return{
       pageSize:10,
       curPage:1,
+      form: {
+        name: '',
+        sex:'',
+        age:'',
+        imgUrl:''
+      },
+      dialogFormVisible: false,
+      formLabelWidth: '60px'
     }
   },
   mounted(){
@@ -59,24 +91,35 @@ export default {
         pageSize:this.pageSize, //每页数据量
         curPage:this.curPage //当前页
       }
-    )
-    console.log(this.total);
+    ),
+    this.$store.dispatch('getUserNum')
   },
   computed:{
-    total () {
-      return this.$store.state.members.members.length
-    },
     ...mapGetters([
       'members',
+      'userNum'
     ])
   },
   methods:{
     editorRow(index,rows){
-      console.log('后台操作');
       console.log(index);
-      console.log(rows);
+      this.dialogFormVisible  = !this.dialogFormVisible;
+    },
+    submitForm(form){
+      // console.log( this.$refs[form].model);
+      this.dialogFormVisible = false
+      // 做到这里了 this.$refs[form].model 拿到了表单得值 现在需要返回给后台做操作
+
+    },
+    computedCurPage(index,rows){
+      //计算当前页码
+      let page = null;
+      page = Math.ceil((index-1)/this.pageSize)
+      return page
     },
     deleteRow(index, rows) {
+      //每次删除重新获取页码
+      this.curPage = this.computedCurPage(index,rows)
       this.$confirm('将要删除该用户, 是否继续?', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -89,10 +132,12 @@ export default {
               pageSize:this.pageSize, //每页数据量
               curPage:this.curPage //当前页
             }
-          )
+          ).then(()=>{
+            this.$store.dispatch('getUserNum')
+          })
           this.$message({
-            type: 'success',
-            message: '删除成功!'
+              type: 'success',
+              message: '删除成功!'
           });
         }).catch(() => {
           this.$message({
@@ -110,7 +155,6 @@ export default {
           curPage:this.curPage //当前页
         }
       )
-      console.log('当前页是: ' +this.curPage);
     }
   }
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 const state = {
   members:[],
+  userNum:null
 };
 const mutations = {
   GET_ALL_MEMBERS(state,payload){
@@ -8,10 +9,24 @@ const mutations = {
   },
   DEL_MEMBERS(state,payload){
     state.members=payload;
+  },
+  GET_USER_NUM(state,payload){
+    state.userNum = payload;
   }
 };
 
 const actions = {
+  getUserNum({commit},params){
+    axios.get("/api/user/getUserCount")
+    .then(res=>{
+      let payload = res.length;
+      // console.log('getUserNum:'+ payload);
+      commit("GET_USER_NUM",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  },
   getAllMembers({commit},params){
     axios.get("/api/user/getUserAll",{
       params:{
@@ -21,8 +36,8 @@ const actions = {
       }
     })
     .then(res=>{
-      let payload = res.data;
-      console.log(payload);
+      let payload = res;
+      // console.log('getAllMembers');
       commit("GET_ALL_MEMBERS",payload)
     })
     .catch(function (error) {
@@ -40,7 +55,7 @@ const actions = {
     })
     .then(res=>{
       let payload = res;
-      console.log(payload); 
+      // console.log('delMembers'); 
       commit("DEL_MEMBERS",payload)
     })
     .catch(function (error) {
@@ -52,6 +67,10 @@ const getters = {
   // 获取按更新状态的数据
   members:state => {
     return state.members
+  },
+  // 用户总数
+  userNum:state => {
+    return state.userNum
   }
 }
 export default{

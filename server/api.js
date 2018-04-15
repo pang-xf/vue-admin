@@ -19,47 +19,93 @@ var jsonWrite = function (res, data) {
     res.json(data);
   }
 };
+// 总用户数
+var getLen = function(){
+  return new Promise((resolve,reject)=>{
+    const sql =`SELECT * FROM USER WHERE root = 1`
+    pool.getConnection((err, connection) => {
+      connection.query(sql,(err, result) => {
+        let len = result.length
+        resolve(len)
+        connection.release();
+      })
+    })
+  })
+};
+// 获得管理员信息
+var getAdminMsg = function(pageSize,curPage){
+  return new Promise((resolve,reject)=>{
+    let root = 0;
+    pool.getConnection((err, connection) => {
+      let sql = `SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root}`
+      connection.query(sql,(err, result) => {
+        resolve(result)
+        connection.release();
+      })
+    })
+  })
+};
+// 所有得用户信息
+var getAllUserMsg = function(pageSize,curPage){
+  return new Promise((resolve,reject)=>{
+    let start = pageSize*(curPage-1); //起始的位置
+    let root = 1;
+    pool.getConnection((err, connection) => {
+      let sql = `SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root} limit ${start},${pageSize} `
+      connection.query(sql,(err, result) => {
+        // 获取所有的数据长度 返回给前端坐分页
+        resolve(result)
+        connection.release();
+      })
+    })
+  })
+};
 module.exports = {
+  //获取全部用户数量
+  async getUserCount(req, res, next){
+    const sql =`SELECT * FROM USER WHERE root = 1`
+    let len = await getLen()
+    // console.log('len: '+ len);
+    res.json({
+      code:'1',
+      msg:'操作成功',
+      length:len
+    })
+  },
   // 获取全部用户列表或者管理原信息
-  getUserAll(req, res, next) {
+  async getUserAll(req, res, next) {
     let count = req.query.pageSize; //每页的数据量 前端传入
     let curPage = req.query.curPage;//当前页  前端传入
-    let start = count*(curPage-1); //起始的位置
     let root  = req.query.root //用户类型
+    //这里是获取管理员信息
     if(root === 0){
-      const sql = `SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root}`
-      pool.getConnection((err, connection) => {
-        connection.query(sql,(err, result) => {
-          jsonWrite(res, result);
-          connection.release();
-        })
-      })
+      let getAdmin = await getAdminMsg();
+      jsonWrite(res, getAdmin);
       return
-    }else{
-      const sql =`SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root} limit ${start},${count} `
-      pool.getConnection((err, connection) => {
-        connection.query(sql,(err, result) => {
-          // 这里没做  获取所有的数据长度 返回给前端坐分页
-          res.json({
-            code:'1',
-            msg:'操作成功',
-            data:result,
-            length:20
-          })
-          // jsonWrite(res, result);
-          connection.release();
-        })
-      })
-      return
+    }else{ 
+      //这里是获取的所有的用户信息
+      let allUserMsg = await getAllUserMsg(count,curPage);
+      jsonWrite(res, allUserMsg);
     }
   },
   // 删除用户信息
-  delUser(req, res, next) {
+  async delUser(req, res, next) {
     let id  = req.query.id //用户类型
     let root  = req.query.root //用户类型
     let count = req.query.pageSize; //每页的数据量 前端传入
     let curPage = req.query.curPage;//当前页  前端传入
+    let len = await getLen() //当前总用户数
+    let offset = len%count  //当前页剩余得偏移量
     let start = count*(curPage-1); //起始的位置
+    console.log('offset: ' +offset);
+    const sql =`SELECT * FROM USER WHERE root = 1`
+    if(offset<=1){
+      // 说明再删就翻页了
+      curPage = curPage-1
+      if(curPage==1){
+        start = 0
+      }
+    }
     if(root == 1){
       const sql = `DELETE FROM USER WHERE id = ${id}`
       pool.getConnection((err, connection) => {
@@ -68,24 +114,8 @@ module.exports = {
             const sql1 =`SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root} limit ${start},${count} `
             pool.getConnection((err, connection) => {
               connection.query(sql1,(err, result) => {
-                const sql2 = `ALTER TABLE user DROP id`; //删除原有自增Id
-                pool.getConnection((err, connection) => {
-                  connection.query(sql2,(err, result) => {
-                    const sql3 = `ALTER TABLE user ADD id INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;`//再创建自增ID
-                    pool.getConnection((err, connection) => {
-                      connection.query(sql3,(err, result) => {
-                        // 这时候已经成功的删除ID并且让ID自增了  再重新的获取全部用户信息返回
-                        const sql4 =`SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root} limit ${start},${count} `
-                        pool.getConnection((err, connection) => {
-                          connection.query(sql4,(err, result) => {
-                            jsonWrite(res, result);
-                            connection.release();
-                          })
-                        })
-                      })
-                    })
-                  })
-                })
+                jsonWrite(res, result);
+                connection.release();
               })
             })
           }else{
@@ -97,13 +127,22 @@ module.exports = {
           }
         })
       })
-      return
     }else{
       res.json({
         code:'-1',
         msg:'不被允许的操作'
       })
+    }
+  },
+  // 修改用户信息
+  async editUser(req, res, next) {
+    //这里是获取管理员信息
+    if(root == 0){
       return
+    }else{ 
+      //这里是获取的所有的用户信息
+      let allUserMsg = await getAllUserMsg(count,curPage);
+      jsonWrite(res, allUserMsg);
     }
   },
 }

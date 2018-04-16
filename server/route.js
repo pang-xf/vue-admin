@@ -5,9 +5,17 @@ var api = require('./api')
 router.get('/api/user/getUserCount', function(req, res, next) {
   return api.getUserCount(req, res, next);
 })
+// 获取所有电影数量
+router.get('/api/movie/getMovieCount', function(req, res, next) {
+  return api.getMovieCount(req, res, next);
+})
 // 获取所有用户信息
 router.get('/api/user/getUserAll', function(req, res, next) {
   return api.getUserAll(req, res, next);
+})
+// 获取所有电影信息
+router.get('/api/movie/getMovieAll', function(req, res, next) {
+  return api.getMovieAll(req, res, next);
 })
 // 删除用户信息
 router.get('/api/user/delUser', function(req, res, next) {
@@ -16,6 +24,10 @@ router.get('/api/user/delUser', function(req, res, next) {
 // 添加影片信息
 router.get('/api/movie/addMovie', function(req, res, next) {
   return api.addMovie(req, res, next);
+})
+// 修改用户信息
+router.get('/api/user/editUser', function(req, res, next) {
+  return api.editUser(req, res, next);
 })
 // 修改管理员信息
 router.get('/api/admin/editAdmin', function(req, res, next) {

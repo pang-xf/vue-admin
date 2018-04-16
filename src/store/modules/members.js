@@ -1,7 +1,8 @@
 import axios from 'axios'
 const state = {
   members:[],
-  userNum:null
+  userNum:null,
+  editStutas:''  //一个状态值  告诉前端是否修改成功
 };
 const mutations = {
   GET_ALL_MEMBERS(state,payload){
@@ -12,10 +13,31 @@ const mutations = {
   },
   GET_USER_NUM(state,payload){
     state.userNum = payload;
-  }
+  },
+  EDIT_USER(state,payload){
+    state.editStutas = payload;
+  },
 };
 
 const actions = {
+  editUser({commit},params){
+    console.log(params);
+    axios.get("/api/user/editUser",{
+      params:{
+        id:params.id,  //传入要修改得用户ID 和新值
+        form:params.form
+      }
+    })
+    .then(res=>{
+      let payload = res;
+      console.log('editUser:'+ payload);
+      console.log(res);
+      commit("EDIT_USER",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  },
   getUserNum({commit},params){
     axios.get("/api/user/getUserCount")
     .then(res=>{
@@ -71,6 +93,10 @@ const getters = {
   // 用户总数
   userNum:state => {
     return state.userNum
+  },
+  // 修改信息
+  editStutas:state => {
+    return state.editStutas
   }
 }
 export default{

@@ -41,21 +41,18 @@
       </el-pagination>
     </div>
     <!-- 对话框 -->
-    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible" width="500px">
-      <el-form :model="form" ref="form">
-        <el-form-item label="用户名" :label-width="formLabelWidth">
+    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible" width="550px">
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name" auto-complete="off" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="头像" :label-width="formLabelWidth">
+        <el-form-item label="头像" :label-width="formLabelWidth" prop="imgUrl">
           <el-input v-model="form.imgUrl" auto-complete="off" placeholder="请输入图像地址"></el-input>
         </el-form-item>
-        <el-form-item label="年龄" :label-width="formLabelWidth">
-          <el-input v-model="form.age" auto-complete="off" placeholder="请输入年龄" style="width:150px"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" :label-width="formLabelWidth">
+        <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
           <el-select v-model="form.sex" placeholder="请选择性别">
-            <el-option label="男" value="man"></el-option>
-            <el-option label="女" value="women"></el-option>
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -77,11 +74,23 @@ export default {
       form: {
         name: '',
         sex:'',
-        age:'',
         imgUrl:''
       },
+      rules:{
+        name:[
+            {required: true, message: '请输入影片名', trigger: 'blur' },
+            { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+        ],
+        imgUrl:[
+            { required: true,message:'请输入图片地址', trigger: 'blur' }
+        ],
+        sex:[
+            {required: true, message: '请选择性别', trigger: 'blur' },
+        ],
+      },
       dialogFormVisible: false,
-      formLabelWidth: '60px'
+      formLabelWidth: '80px',
+      id:null
     }
   },
   mounted(){
@@ -102,14 +111,29 @@ export default {
   },
   methods:{
     editorRow(index,rows){
-      console.log(index);
       this.dialogFormVisible  = !this.dialogFormVisible;
+      this.id = index
+      this.form.name = this.members[index-2].USER
+      this.form.sex = this.members[index-2].SEX
+      this.form.imgUrl = this.members[index-2].AVTAR
     },
     submitForm(form){
-      // console.log( this.$refs[form].model);
-      this.dialogFormVisible = false
       // 做到这里了 this.$refs[form].model 拿到了表单得值 现在需要返回给后台做操作
-
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          //   数据格式正确
+          console.log(this.$refs[form].model);
+          this.dialogFormVisible = false
+          this.$store.dispatch('editUser',{
+            id: this.id,
+            form:this.$refs[form].model
+          })
+          this.$router.go(0)
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     computedCurPage(index,rows){
       //计算当前页码

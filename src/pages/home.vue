@@ -8,11 +8,10 @@
       </div>
       <div class="box">
         <div class="intro">
-          <img src="https://s1.ax1x.com/2018/04/16/CevgiT.jpg" alt="">
-          <p>影视资源管理系统后台</p> 
-        </div>
-        <div class="sysDetail">
-
+          <p class="title">影视资源管理系统后台</p> 
+          <p>昨日注册人数:</p>
+          <p>今日注册人数:</p>
+          <p>总注册人数:</p>
         </div>
     </div>
 </div>
@@ -79,19 +78,9 @@ export default {
     .intro{
       text-align: center;
       position: relative;
-      p{
-        position: absolute;
+      .title{
+        font-size: 22px;
       }
-    }
-    img{
-      width: 100%;
-      height: 100%;
-    }
-    .sysDetail{
-      background: saddlebrown;
-      width: 100%;
-      height: 200px;
-      margin-top: 50px;
     }
   }
   .clear{

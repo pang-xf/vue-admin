@@ -9,27 +9,38 @@
   </div>
 
   <div class="box">
-    <el-table :data="userData" border style="margin:5px auto">
-      <el-table-column label="ID" type="index"  prop="id"></el-table-column>
+    <el-table :data="movie" border style="margin:5px auto">
+      <el-table-column label="ID"  prop="id" width="60"></el-table-column>
       <el-table-column label="封面" prop="img" width="100">
         <template slot-scope="scope">
-          <img :src="scope.row.img" alt="" style="width:70px;height:100px;">
+          <img :src="scope.row.IMG" alt="" style="width:70px;height:100px;">
         </template>
       </el-table-column>
-      <el-table-column label="名称" prop="name"  width="200"></el-table-column>
-      <el-table-column label="类型" prop="type" width="100"></el-table-column>
-      <el-table-column label="国家" prop="country"  width="100"></el-table-column>
-      <el-table-column label="状态" prop="status"  width="100"></el-table-column>
-      <el-table-column label="收藏量" prop="collectNum"  width="100"></el-table-column>
-      <el-table-column label="上映年份" prop="time"  width="130"></el-table-column>
-      <el-table-column label="简介" prop="intro" class-name="intro"></el-table-column>
+      <el-table-column label="名称" prop="NAME"  width="200"></el-table-column>
+      <el-table-column label="类型" prop="TYPE" width="100"></el-table-column>
+      <el-table-column label="国家" prop="COUNTRY"  width="100"></el-table-column>
+      <el-table-column label="状态" prop="STATE"  width="100"></el-table-column>
+      <el-table-column label="评分" prop="RATE"  width="100"></el-table-column>
+      <el-table-column label="收藏量" prop="DINGYUE"  width="100"></el-table-column>
+      <el-table-column label="上映年份" prop="TIME"  width="130"></el-table-column>
+      <el-table-column label="简介" prop="PROFILE" class-name="intro"></el-table-column>
       <el-table-column label="操作"  width="180">
         <template slot-scope="scope">
-          <el-button type="primary" @click.native.prevent="editorRow(scope.$index, userData)">修改</el-button>
-          <el-button type="danger" @click.native.prevent="deleteRow(scope.$index, userData)">删除</el-button>
+          <el-button type="primary" @click.native.prevent="editorRow(scope.$index,scope.row.id)">修改</el-button>
+          <el-button type="danger" @click.native.prevent="deleteRow(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+  </div>
+  <div class="page">
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total = movieNum
+      :page-size = pageSize
+      @current-change = changeData
+    >
+    </el-pagination>
   </div>
   <!-- diglog -->
   <el-dialog title="修改影片信息" :visible.sync="dialogFormVisible" width="500px">
@@ -73,7 +84,7 @@
         <el-input type="textarea" v-model="form.intro" placeholder="请输入简介"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('form')">修改</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
     </el-form-item>
     </el-form>
@@ -84,65 +95,7 @@
 import { mapGetters } from 'vuex'
 export default {
   data(){
-    var validateImg = (rule, value, callback) => {
-        if (value === '') {
-            callback(new Error('请输入头像地址Url'));
-        } else {
-            let reg = /http:[/]{2}[a-zA-Z0-9.%=/]{1,}[.](jpg|png)/g
-            if (!reg.test(this.form.img)) {
-                callback(new Error('请输入正确的地址Url'));
-            }else{
-                callback();                
-            }
-        }
-    };
     return{
-      userData:[
-        {
-          id:'1',
-          name:'权力的游戏',
-          type:'类型',
-          img:'http://img.neets.cc/video/91159fd3a9064b93bfbbc12b74a0484b/large.jpg',
-          collectNum:'2000',
-          country:'美国',
-          time:'2017-6-10',
-          intro:'支持解析下载抖音、muse(musical.ly)、今日头条、西瓜视频、内涵段子、微博、秒拍、小咖秀、晃咖、火山、快手、映客、陌陌、美拍、小影、阳光宽频等平台的视频，功能强大，美滋滋，想下哪里下哪里，so easy!',
-          status:'完结',
-        },
-         {
-          id:'2',
-          name:'权力的游戏',
-          img:'http://img.neets.cc/video/91159fd3a9064b93bfbbc12b74a0484b/large.jpg',
-          type:'类型',
-          country:'美国',
-          collectNum:'2000',
-          time:'2017-6-10',
-          intro:'简介',
-          status:'完结',
-        },
-         {
-          id:'3',
-          name:'权力的游戏',
-          img:'http://img.neets.cc/video/91159fd3a9064b93bfbbc12b74a0484b/large.jpg',
-          type:'类型',
-          country:'美国',
-          collectNum:'2000',
-          time:'2017-6-10',
-          intro:'简介',
-          status:'完结',
-        },
-         {
-          id:'4',
-          name:'权力的游戏',
-          img:'http://img.neets.cc/video/91159fd3a9064b93bfbbc12b74a0484b/large.jpg',
-          type:'类型',
-          country:'美国',
-          collectNum:'2000',
-          time:'2017-6-10',
-          intro:'简介',
-          status:'完结',
-        },
-      ],
       form: {
         name: '',
         img: '',
@@ -158,7 +111,7 @@ export default {
             { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
         ],
         img:[
-            { required: true,validator: validateImg, trigger: 'blur' }
+            { required: true, message: '请填写图片地址', trigger: 'blur' }
         ],
         region:[
             {required: true, message: '请选择地区', trigger: 'blur' },
@@ -179,13 +132,14 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '80px',
       id:null,//点击修改按钮时的id值
+      pageSize:10,
+      curPage:1,
     }
   },
   mounted(){
     // 获取当前页电影
     this.$store.dispatch('getAllMovie',
       { 
-        root:1,
         pageSize:this.pageSize, //每页数据量
         curPage:this.curPage //当前页
       }
@@ -201,17 +155,36 @@ export default {
   },
   methods:{
     // 点击修改按钮
-    editorRow(index,rows){
-      // console.log(index);
-      // console.log(rows);
+    editorRow(index,id){
       this.dialogFormVisible  = !this.dialogFormVisible;
-      this.id = index + 1
+      this.id = id
+      this.form.name = this.movie[index].NAME
+      this.form.img = this.movie[index].IMG
+      this.form.region = this.movie[index].COUNTRY
+      this.form.time = this.movie[index].TIME
+      this.form.type = this.movie[index].TYPE
+      if(this.movie[index].STATE == '1'){
+        this.form.status = '连载'
+      }else{
+        this.form.status = '完结'
+      }
+      this.form.intro = this.movie[index].PROFILE
+      console.log(this.id);
     },
     handlrTime(time){
         // 时间处理函数
         let handlr = new Date(time);
         let newTime = handlr.toLocaleString().split(' ')[0].split('/').join('-');
         return newTime
+    },
+    changeData(val){
+      this.curPage = val
+      this.$store.dispatch('getAllMovie',
+        { 
+          pageSize:this.pageSize, //每页数据量
+          curPage:this.curPage //当前页
+        }
+      )
     },
     submitForm(form){
        // 进来应该先处理数据  判断数据格式是否正确
@@ -222,11 +195,12 @@ export default {
           this.form.time = time; //重置form表单的时间并提交
           //console.log(this.$refs[form].model); //这时的表单是正确的  传给后台  返回给前端  增加操作完成
           this.$store.dispatch('editMovie',
-              {
-                id:this.id,
-                form:this.$refs[form].model
-              }
+            {
+              id:this.id,
+              form:this.$refs[form].model
+            }
           ); //触发action  还有需要重新dispacth下  重新获取全部的影片信息 或者刷新当前页
+          // this.$router.go(0)
         } else {
           console.log('error submit!!');
           return false;
@@ -298,5 +272,12 @@ export default {
       -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
       -webkit-line-clamp: 2; /** 显示的行数 **/
       overflow: hidden; /** 隐藏超出的内容 **/
+  }
+  .page{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

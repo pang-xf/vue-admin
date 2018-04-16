@@ -12,18 +12,19 @@ const mutations = {
 const actions = {
   editMovie({commit},params){
       console.log(params);
-    // axios.get("/api/movie/editMOvie",{
-    //     id:params.id,
-    //     form:params.form
-    // })
-    // .then(res=>{
-    //   let payload = res;
-    //   // console.log('editMOvie:'+ payload);
-    //   commit("EDIT_Movie_STUTAS",payload)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    axios.get("/api/movie/editMovie",{
+      params:{
+        id:params.id,
+        form:params.form
+      }
+    })
+    .then(res=>{
+      let payload = res.code;
+      commit("EDIT_Movie_STUTAS",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
 };
 const getters = {

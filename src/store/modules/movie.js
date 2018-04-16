@@ -17,31 +17,32 @@ const mutations = {
 
 const actions = {
   getMovieNum({commit},params){
-    // axios.get("/api/user/getUserCount")
-    // .then(res=>{
-    //   let payload = res.length;
-    //   commit("GET_MOVIE_NUM",payload)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    axios.get("/api/movie/getMovieCount")
+    .then(res=>{
+      let payload = res.length;
+      console.log(payload);
+      commit("GET_MOVIE_NUM",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
   getAllMovie({commit},params){
-    // axios.get("/api/user/getUserAll",{
-    //   params:{
-    //     root:params.root,
-    //     pageSize:params.pageSize,
-    //     curPage:params.curPage,
-    //   }
-    // })
-    // .then(res=>{
-    //   let payload = res;
-    //   // console.log('getAllMembers');
-    //   commit("GET_ALL_MOVIE",payload)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    axios.get("/api/movie/getMovieAll",{
+      params:{
+        pageSize:params.pageSize,
+        curPage:params.curPage,
+      }
+    })
+    .then(res=>{
+      let payload = res.data;
+      console.log(payload);
+      // console.log('getAllMovie');
+      commit("GET_ALL_MOVIE",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
   delMovie({commit},params){
     console.log(params);
@@ -66,11 +67,11 @@ const actions = {
 const getters = {
   // 获取按更新状态的数据
   movie:state => {
-    return state.members
+    return state.movie
   },
   // 用户总数
   movieNum:state => {
-    return state.userNum
+    return state.movieNum
   }
 }
 export default{

@@ -10,8 +10,8 @@
       ></i>
   </m-navbar-brand>
   <m-nav>
-    <m-nav-item><a href="https://www.lanyueos.com" target="_blank">主页</a></m-nav-item>
-    <m-nav-item><a href="https://www.lanyueos.com" target="_blank">关于</a></m-nav-item>
+    <m-nav-item><a href="https://github.com/liyushilezhi" target="_blank">主页</a></m-nav-item>
+    <m-nav-item><a href="https://github.com/liyushilezhi" target="_blank">关于</a></m-nav-item>
   </m-nav>
   <m-nav align="right">
     <m-nav-item padding="0">

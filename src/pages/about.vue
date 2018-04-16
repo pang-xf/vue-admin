@@ -5,7 +5,7 @@
       <p>追剧管家后台管理系统</p>
       <p>Made By <a href="https://github.com/liyushilezhi" target="_blank">是李宇呀丶</a></p>
       <p>Inspire By <a href="https://github.com/mengdu" target="_blank">mengdu</a></p>
-      <p>Time: 2018-4-12</p>
+      <p>slogen: 我的心愿是,世界和平</p>
     </div>
   </div>
 </template>
@@ -16,18 +16,16 @@ export default {
 </script>
 <style lang="less" scoped>
 .wrap{
-  height: 620px;
-  width: 40%;
+  width: 18%;
   background: #fff;
-  margin: 140px auto 100px auto;
+  margin: 140px auto auto auto;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   .con{
     padding: 20px;
-    width: 50%;
-    height: 500px;
+    width: 100%;
     .avtar{
       display: block;
       border-radius: 50%;
@@ -43,7 +41,7 @@ export default {
     }
     p{
       text-align: center;
-      font-size: 24px;
+      font-size: 18px;
     }
     a{
       color:salmon;

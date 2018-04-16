@@ -13,4 +13,16 @@ router.get('/api/user/getUserAll', function(req, res, next) {
 router.get('/api/user/delUser', function(req, res, next) {
   return api.delUser(req, res, next);
 })
+// 添加影片信息
+router.get('/api/movie/addMovie', function(req, res, next) {
+  return api.addMovie(req, res, next);
+})
+// 修改管理员信息
+router.get('/api/admin/editAdmin', function(req, res, next) {
+  return api.editAdmin(req, res, next);
+})
+// 修改影片信息
+router.get('/api/movie/editMovie', function(req, res, next) {
+  return api.editMovie(req, res, next);
+})
 module.exports = router;

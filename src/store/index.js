@@ -1,16 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import cnode from './cnode'
 import user from './user'
 import members from './modules/members';
+import addMovie from './modules/addMovie';
+import admin from './modules/admin';
+import editMovie from './modules/editMovie';
+import movie from './modules/movie';
+import search from './modules/search';
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
-    cnode,
     user,
-    members
+    members,
+    addMovie,
+    admin,
+    editMovie,
+    movie,
+    search
   }
 })

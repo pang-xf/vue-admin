@@ -29,6 +29,7 @@
     "mysql": "^2.15.0",
     "nprogress": "^0.2.0",
     "vue": "^2.5.2",
+    "vue-echarts": "^3.0.7",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

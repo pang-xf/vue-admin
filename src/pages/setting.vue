@@ -71,6 +71,7 @@
 </div>
 </template>
 <script>
+import { mapGetters,mapActions  } from 'vuex'
 export default {
   data(){
     return{
@@ -100,6 +101,11 @@ export default {
       radio:'1'
     }
   },
+  computed:{
+    ...mapGetters([
+      'admin',
+    ])
+  },
   methods:{
     changeNickName(){
       if(!this.changeNick){
@@ -107,6 +113,12 @@ export default {
         console.log(this.user[0].name);
       }else{
         console.log('确认修改');
+        this.$store.dispatch('editMsg',
+          {
+            key:'name',
+            value:this.user[0].name
+          }
+        )
         console.log(this.user[0].name);
       }
       this.changeNick = !this.changeNick;
@@ -144,9 +156,10 @@ export default {
   .box{
     width: 40%;
     margin: 100px auto;
+    border-radius: 6px;
   }
   .settingWrap{
-    height: 500px;
+    // height: 500px;
     padding: 0px 20px 20px 20px;
     font-size: 18px;
     p{

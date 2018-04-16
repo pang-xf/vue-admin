@@ -16,18 +16,8 @@ export default new Router({
       component: AppView,
       children: [
         {path: '/', name: 'home', component: Home},
-        {path: '/button', name: 'c-button', component: page('c-button')},
-        {path: '/switch', name: 'c-switch', component: page('c-switch')},
-        {path: '/checkbox', name: 'c-checkbox', component: page('c-checkbox')},
-        {path: '/alert', name: 'c-alert', component: page('c-alert')},
-        {path: '/input', name: 'c-input', component: page('c-input')},
-        {path: '/keyboard', name: 'c-keyboard', component: page('c-keyboard')},
+        // {path: '/keyboard', name: 'c-keyboard', component: page('c-keyboard')},
         {path: '/loading', name: 'c-loading', component: page('c-loading')},
-        {path: '/data-table', name: 'p-data-table', component: page('table')},
-        {path: '/dropdown', name: 'c-dropdown', component: page('c-dropdown')},
-        {path: '/navbar', name: 'c-navbar', component: page('c-navbar')},
-        {path: '/container', name: 'c-container', component: page('c-container')},
-        {path: '/demo', name: 'demo', component: page('demo')},
         // 这里开始是我需要的
         {path: '/404', name: '404', component: page('404')},
         {path: '/500', name: '500', component: page('500')},
@@ -38,13 +28,12 @@ export default new Router({
         {path: '/editPwd', name: 'editPwd', component: page('editPwd')},
         {path: '/search-user', name: 'search-user', component: page('search-user')},
         {path: '/search-movie', name: 'search-movie', component: page('search-movie')},
+        {path: '/addMovie', name: 'addMovie', component: page('addMovie')},
       ]
     },
     {path: '/login', name: 'login', component: page('login')},
     // pages
-    {path: '/home-login', name: 'p-login', component: page('home-login')},
-    {path: '/register', name: 'p-register', component: page('register')},
-    {path: '/keyboard', name: 'p-keyboard', component: page('c-keyboard')},
+    // {path: '/keyboard', name: 'p-keyboard', component: page('c-keyboard')},
     {path: '*', redirect: {name: '404'}}
   ]
 })

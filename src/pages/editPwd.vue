@@ -26,6 +26,7 @@
 </div>
 </template>
 <script type="text/javascript">
+import { mapGetters } from 'vuex'
 export default {
   data(){
     var checkPwd = (rule, value, callback) => {
@@ -58,6 +59,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!');
+          this.$store.dispatch('editPwd',{pwd:this.$refs[formName].model.pass})
         } else {
           console.log('error submit!!');
           return false;

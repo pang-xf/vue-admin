@@ -6,7 +6,6 @@ import ElementUI from 'element-ui'
 import Axios from 'axios'
 import NProgress from 'nprogress'
 
-
 import App from './App'
 import store from './store'
 import router from './router'
@@ -35,7 +34,6 @@ import MBackTop from '@/m/back-top'
 import MLoader from '@/m/loader'
 import MContainer from '@/m/container'
 
-
 Vue.use(ElementUI)
 
 Vue.use(DropdownPlugin)
@@ -53,7 +51,6 @@ Vue.use(MBox)
 Vue.use(MBackTop)
 Vue.use(MLoader)
 Vue.use(MContainer)
-
 
 var whiteList = ['demo', 'login']
 router.beforeEach((to, from, next) => {

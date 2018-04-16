@@ -9,22 +9,27 @@
       </div>
       <div class="box">
         <div class="header">
-          <el-input v-model="input" placeholder="请输入用户名" class="searchInput"></el-input>
-          <el-button type="primary">搜索</el-button>
+          用户搜索（暂只支持按用户名搜索）: <br>
+          <br>
+          <el-input v-model="input" :placeholder=placeholder class="searchInput"></el-input>
+          <el-button type="primary" @click="searchUser">搜索</el-button>
         </div>
-        <div class="tableMsg">
-          <el-table :data="userData">
-            <el-table-column label="ID" type="index"  prop="id" width="180"></el-table-column>
+        <div class="tableMsg" v-if="search_user">
+          <!-- <el-table :data="search_user">
             <el-table-column label="用户名" prop="name"></el-table-column>
             <el-table-column label="性别" prop="sex"></el-table-column>
             <el-table-column label="注册时间" prop="regTime"></el-table-column>
-          </el-table>
+          </el-table> -->
+        </div>
+        <div v-else>
+          无数据
         </div>
       </div>
 </div>
 </div>
 </template>
 <script type="text/javascript">
+import { mapGetters } from 'vuex'
 export default {
   data(){
     return{
@@ -48,23 +53,32 @@ export default {
           regTime:'2017-8-10'
         }
       ],
-      input:''
+      input:'',
+      placeholder:'请输入用户名',
     }
   },
+  computed:{
+    // ...mapGetters('search_user')
+  },
+  methods:{
+    searchUser(){
+      this.$store.dispatch('searchUser',{name:this.input})
+    }
+  }
 }
 </script>
 <style type="text/css" scoped lang="less">
   .box{
-    // width: 34%;
-    // margin: 120px auto;
+    width: 44%;
+    margin: 100px auto auto auto;
     // height: 500px;
-    // font-size: 16px;
-    min-height: 600px;
+    font-size: 16px;
+    // min-height: 600px;
     .header{
       margin-bottom: 30px;
       width: 100%;
       .searchInput{
-        width: 20%;
+        width: 60%;
       }
     }
     .tableMsg{

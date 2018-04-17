@@ -71,18 +71,6 @@
 import { mapGetters } from 'vuex'
 export default {
   data(){
-    var validateImg = (rule, value, callback) => {
-        if (value === '') {
-            callback(new Error('请输入头像地址Url'));
-        } else {
-            let reg = /http:[/]{2}[a-zA-Z0-9.%=/]{1,}[.](jpg|png)/g
-            if (!reg.test(this.form.img)) {
-                callback(new Error('请输入正确的地址Url'));
-            }else{
-                callback();                
-            }
-        }
-    };
     return{
         form: {
             name: '',
@@ -99,7 +87,7 @@ export default {
                 { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
             ],
             img:[
-                { required: true,validator: validateImg, trigger: 'blur' }
+                { required: true,message: '请输入图片地址', trigger: 'blur' }
             ],
             region:[
                 {required: true, message: '请选择地区', trigger: 'blur' },

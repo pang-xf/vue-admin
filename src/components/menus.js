@@ -8,7 +8,7 @@ const menus = [
   },
   {
     id: 'movielist',
-    icon: 'fa fa-folder',
+    icon: 'fa fa-film',
     label: '影片列表',
     path: '/movielist'
   },

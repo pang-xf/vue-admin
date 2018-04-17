@@ -75,16 +75,16 @@ var getAllUserMsg = function(pageSize,curPage){
 };
 // 添加影片信息
 var addMovie = function(form){
+  console.log(form);
   return new Promise((resolve,reject)=>{
     pool.getConnection((err, connection) => {
-      let sql = `insert into USER (name,img,country,time,type,status,intro) values (${form.name},${form.img},${form.region},${form.time},${form.type},${form.status},${form.intro}); `
+      let sql = `insert into Movie (name,img,country,time,type,state,profile) values ('${form.name}','${form.img}','${form.region}','${form.time}','${form.type}','${form.status}','${form.intro}'); `
       connection.query(sql,(err, result) => {
         // 添加数据 返回给前端添加结果  成功为1 失败为0
-        console.log(result);
         if(result){
           resolve(result)
         }else{
-          reject(error)
+          reject(err)
         }
         connection.release();
       })
@@ -95,14 +95,13 @@ var addMovie = function(form){
 var editAdmin = function(key,value){
   return new Promise((resolve,reject)=>{
     pool.getConnection((err, connection) => {
-      let sql = `UPDATE USER SET ${key} = ${value}`
+      let sql = `UPDATE USER SET ${key} = '${value}' WHERE ROOT = 0`
       connection.query(sql,(err, result) => {
         // 添加数据 返回给前端添加结果  成功为1 失败为0
-        console.log(result);
         if(result){
           resolve(result)
         }else{
-          reject(error)
+          reject(err)
         }
         connection.release();
       })
@@ -153,17 +152,15 @@ var handlrSearch = function(type,name){
       let sql;
       // 这里的sql没写好 不知道数据库结构了
       if(type=='user'){
-        sql = `SELECT ID,USER,AVTAR,SEX,REGTIME FROM USER WHERE name = ${name};`
+        sql = `SELECT USER,AVTAR,SEX,REGTIME,ROOT FROM USER WHERE user like '%${name}%';`
       }else{
-        sql = `SELECT ID,NAME,AVTAR,SEX,REGTIME FROM MOVIE WHERE name = ${name};`
+        sql = `SELECT NAME,IMG,TYPE,COUNTRY,STATE,RATE,DINGYUE,PROFILE FROM MOVIE WHERE name like '%${name}%';`
       }
-      console.log(sql);
       connection.query(sql,(err, result) => {
-        console.log(result);
         if(result){
           resolve(result)
         }else{
-          reject(error)
+          reject(err)
         }
         connection.release();
       })
@@ -178,6 +175,18 @@ var getMovieAll = function(pageSize,curPage){
       let sql = `SELECT id,NAME,TYPE,CATEGORY,COUNTRY,TIME,PROFILE,STATE,IMG,DINGYUE,RATE FROM MOVIE limit ${start},${pageSize} `
       connection.query(sql,(err, result) => {
         // 获取所有的数据长度 返回给前端坐分页
+        resolve(result)
+        connection.release();
+      })
+    })
+  })
+};
+// 删除影片信息
+var delMovie = function(id){
+  return new Promise((resolve,reject)=>{
+    const sql = `DELETE FROM MOVIE WHERE id = ${id}`
+    pool.getConnection((err, connection) => {
+      connection.query(sql,(err, result) => {
         resolve(result)
         connection.release();
       })
@@ -291,9 +300,8 @@ module.exports = {
   },
   // 添加影片信息
   async addMovie(req, res, next) {
-    let form  = req.query.form //添加的表单数据
+    let form  = JSON.parse(req.query.form) //添加的表单数据
     let addStatus = await addMovie(form)
-    console.log(addStatus);  //这里没做   失败返回-1
     res.json({
       code:1,
       msg:'添加成功'
@@ -307,6 +315,15 @@ module.exports = {
     res.json({
       code:1,
       msg:'修改成功'
+    })
+  },
+  // 获取管理员信息
+  async getAdminMsg(req, res, next) {
+    let admin = await getAdminMsg()
+    res.json({
+      code:1,
+      msg:'获取成功',
+      data:admin
     })
   },
   // 修改影片信息
@@ -330,60 +347,64 @@ module.exports = {
     let id  = req.query.id //影片id
     let count = req.query.pageSize; //每页的数据量 前端传入
     let curPage = req.query.curPage;//当前页  前端传入
-    let len = await getLen() //当前总用户数
+    let len = await getMovieLen() //当前总电影数
     let offset = len%count  //当前页剩余得偏移量
-    let start = count*(curPage-1); //起始的位置
     console.log('offset: ' +offset);
-    const sql =`SELECT * FROM USER WHERE root = 1`
-    if(offset<=1){
+    if(offset==1){
       // 说明再删就翻页了
       curPage = curPage-1
       if(curPage==1){
         start = 0
       }
     }
-    const sql = `DELETE FROM USER WHERE id = ${id}`
-      pool.getConnection((err, connection) => {
-        connection.query(sql,(err, result) => {
-          if(result.affectedRows == 1){
-            const sql1 =`SELECT id,USER,AVTAR,SEX,REGTIME FROM USER WHERE root = ${root} limit ${start},${count} `
-            pool.getConnection((err, connection) => {
-              connection.query(sql1,(err, result) => {
-                jsonWrite(res, result);
-                connection.release();
-              })
-            })
-          }else{
-            res.json({
-              code:'-1',
-              msg:'操作失败'
-            })
-            return
-          }
-        })
-      })
+    let del = await delMovie(id)  //先删除
+    let movie  = await getMovieAll(count,curPage) //再重新获取movie
+    if(movie){
+      res.json({
+        code:'1',
+        msg:'删除成功',
+      });
+    }else{
+      res.json({
+        code:'-1',
+        msg:'操作失败'
+      });
+    }
   },
-  // 搜索用户信息
+  // 搜索
   async searchMovie(req, res, next) {
-    // 传1个参数过去  用户名
-    let name  = req.query.name
-    let userMsg = await handlrSearch('user',name)
-    console.log(userMsg);
-    res.json({
-      code:1,
-      msg:'查询成功',
-      data:userMsg
-    })
-  },
-  async searchUser(req, res, next) {
     // 传1个参数过去  用户名
     let name  = req.query.name
     let movieMsg = await handlrSearch('movie',name)
     console.log(movieMsg);
-    res.json({
-      code:1,
-      msg:'查询成功',
-      data:movieMsg
-    })
+    if(movieMsg.length){
+      res.json({
+        code:1,
+        msg:'查询成功',
+        data:movieMsg
+      })
+    }else{
+      res.json({
+        code:-1,
+        msg:'查询失败，无数据',
+      })
+    }
+  },
+  async searchUser(req, res, next) {
+    // 传1个参数过去  用户名
+    let name  = req.query.name
+    let userMsg = await handlrSearch('user',name)
+    if(userMsg.length){
+      res.json({
+        code:1,
+        msg:'查询成功',
+        data:userMsg
+      })
+    }else{
+      res.json({
+        code:-1,
+        msg:'查询失败，无数据',
+      })
+    }
   },
 }

@@ -20,8 +20,17 @@
             <el-button type="primary" @click="submitForm('form')">提交</el-button>
             <el-button @click="resetForm('form')">重置</el-button>
           </el-form-item>
-      </el-form>
+        </el-form>
       </div>
+      <el-dialog
+        title="修改成功!!!"
+        :visible.sync="dialogVisible"
+        width="30%">
+        <span>你的新密码请牢记哦！</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handlr">确 定</el-button>
+        </span>
+      </el-dialog>
 </div>
 </div>
 </template>
@@ -51,14 +60,19 @@ export default {
         checkPass: [
           { validator: checkPwd, trigger: 'blur' }
         ],
-      }
+      },
+      // dialogVisible:false
     }
+  },
+  computed:{
+    ...mapGetters({
+      dialogVisible : 'editPwdStatus'
+    })
   },
   methods:{
     submitForm(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
           this.$store.dispatch('editPwd',{pwd:this.$refs[formName].model.pass})
         } else {
           console.log('error submit!!');
@@ -68,6 +82,11 @@ export default {
     },
     resetForm(formName){
       this.$refs[formName].resetFields();
+    },
+    handlr(){
+      this.$store.dispatch('handlrPwdStatus')
+      this.form.pass = ''
+      this.form.checkPass = ''
     }
   }
 }

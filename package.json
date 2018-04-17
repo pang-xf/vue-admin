@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin-tpl",
+  "name": "admin",
   "version": "1.0.4",
-  "description": "A template for Vue",
-  "author": "lanyue <lanyueos@qq.com>",
+  "description": "admin",
+  "author": "是李宇呀丶",
   "private": true,
   "app": {
     "name": "追剧管家后台管理系统"

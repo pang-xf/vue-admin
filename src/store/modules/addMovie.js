@@ -11,18 +11,24 @@ const mutations = {
 
 const actions = {
   addMovie({commit},params){
-      console.log(params);
-    // axios.get("/api/movie/addMovie",{
-    //     form:params.form
-    // })
-    // .then(res=>{
-    //   let payload = res;
-    //   // console.log('addMovie:'+ payload);
-    //   commit("ADD_Movie",payload)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+      if(params.form.status == '完结'){
+        params.form.status = 1
+      }else{
+        params.form.status = 0
+      }
+    axios.get("/api/movie/addMovie",{
+      params:{
+        form:params.form
+      }
+    })
+    .then(res=>{
+      let payload = res;
+      console.log(res);
+      commit("ADD_Movie",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
 };
 const getters = {

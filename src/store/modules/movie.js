@@ -1,14 +1,15 @@
 import axios from 'axios'
 const state = {
   movie:[],
-  movieNum:null
+  movieNum:null,
+  delStatus:{}
 };
 const mutations = {
   GET_ALL_MOVIE(state,payload){
     state.movie=payload;
   },
   DEL_MOVIE(state,payload){
-    state.movie=payload;
+    state.delStatus=payload;
   },
   GET_MOVIE_NUM(state,payload){
     state.movieNum = payload;
@@ -20,7 +21,6 @@ const actions = {
     axios.get("/api/movie/getMovieCount")
     .then(res=>{
       let payload = res.length;
-      console.log(payload);
       commit("GET_MOVIE_NUM",payload)
     })
     .catch(function (error) {
@@ -36,8 +36,7 @@ const actions = {
     })
     .then(res=>{
       let payload = res.data;
-      console.log(payload);
-      // console.log('getAllMovie');
+      // console.log(payload);
       commit("GET_ALL_MOVIE",payload)
     })
     .catch(function (error) {
@@ -45,24 +44,23 @@ const actions = {
     });
   },
   delMovie({commit},params){
-    console.log(params);
-    // axios.get("/api/user/delUser",{
-    //   params:{
-    //     root:params.root,
-    //     id:params.id,
-    //     pageSize:params.pageSize,
-    //     curPage:params.curPage,
-    //   }
-    // })
-    // .then(res=>{
-    //   let payload = res;
-    //   // console.log('delMembers'); 
-    //   commit("DEL_MOVIE",payload)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-  }
+    // console.log(params);
+    axios.get("/api/movie/delMovie",{
+      params:{
+        id:params.id,
+        pageSize:params.pageSize,
+        curPage:params.curPage,
+      }
+    })
+    .then(res=>{
+      let payload = res;
+      // console.log(payload); 
+      commit("DEL_MOVIE",payload)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  },
 };
 const getters = {
   // 获取按更新状态的数据

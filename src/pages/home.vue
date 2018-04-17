@@ -9,15 +9,17 @@
       <div class="box">
         <div class="intro">
           <p class="title">影视资源管理系统后台</p> 
-          <p>昨日注册人数:</p>
-          <p>今日注册人数:</p>
-          <p>总注册人数:</p>
+          <p>当前总用户数: {{getMemNum.length}} </p>
+          <p>当前总影片数: {{movieNum}}</p>
+          <p>欢迎帅气的管理员大大</p>
+          <p>今天也要元气满满哦....</p>
         </div>
     </div>
 </div>
 </div>
 </template>
 <script type="text/javascript">
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -66,20 +68,42 @@ export default {
         }
       ]
     }
+  },
+  computed:{
+    ...mapGetters(['getMemNum','movieNum']),
+  },
+  mounted(){
+    this.getNum()
+  },
+  methods:{
+    getNum(){
+      this.$store.dispatch('getMemNum')
+      this.$store.dispatch('getMovieNum')
+    }
   }
 }
 </script>
 <style type="text/css" scoped lang="less">
   .box{
-    margin-bottom: 10px;
     width: 60%;
-    margin: 0 auto;
-    background: #fff;
+    margin: 100px auto auto auto;
+    height: 500px;
+    background: url(https://s1.ax1x.com/2018/04/17/CnnfBt.png);
+    background-size: cover;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .intro{
       text-align: center;
       position: relative;
+      color:#fff;
       .title{
-        font-size: 22px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      p{
+        font-size: 18px;
       }
     }
   }

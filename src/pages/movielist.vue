@@ -27,7 +27,7 @@
       <el-table-column label="操作"  width="180">
         <template slot-scope="scope">
           <el-button type="primary" @click.native.prevent="editorRow(scope.$index,scope.row.id)">修改</el-button>
-          <el-button type="danger" @click.native.prevent="deleteRow(scope.$index)">删除</el-button>
+          <el-button type="danger" @click.native.prevent="deleteRow(scope.$index,scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -200,7 +200,7 @@ export default {
               form:this.$refs[form].model
             }
           ); //触发action  还有需要重新dispacth下  重新获取全部的影片信息 或者刷新当前页
-          // this.$router.go(0)
+          this.$router.go(0)
         } else {
           console.log('error submit!!');
           return false;
@@ -220,12 +220,14 @@ export default {
     computedCurPage(index,rows){
       //计算当前页码
       let page = null;
-      page = Math.ceil((index-1)/this.pageSize)
+      page = Math.ceil((rows-1)/this.pageSize)
       return page
     },
     // 删除
-    deleteRow(index, rows) {
-      this.curPage = this.computedCurPage(index,rows)
+    deleteRow(index, id) {
+      this.curPage = this.computedCurPage(index,id)
+      console.log(index);
+      console.log(id);
       this.$confirm('将要删除该资源, 是否继续?', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -233,13 +235,18 @@ export default {
         }).then(() => {
           this.$store.dispatch('delMovie',
             { 
-              root:1,
-              id:index, //删除的用户id
+              id:id, //删除的电影id
               pageSize:this.pageSize, //每页数据量
               curPage:this.curPage //当前页
             }
           ).then(()=>{
             this.$store.dispatch('getMovieNum')
+          }).then(()=>{
+            this.$store.dispatch('getAllMovie',
+            { 
+              pageSize:this.pageSize, //每页数据量
+              curPage:this.curPage //当前页
+            })
           })
           this.$message({
               type: 'success',
@@ -263,7 +270,7 @@ export default {
     overflow: auto;
   }
   .box{
-    min-height: 700px;
+    // min-height: 700px;
   }
   .el-table .cell{
      word-break: break-all;

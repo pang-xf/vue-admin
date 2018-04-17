@@ -8,6 +8,7 @@ import admin from './modules/admin';
 import editMovie from './modules/editMovie';
 import movie from './modules/movie';
 import search from './modules/search';
+import count from './modules/count';
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     admin,
     editMovie,
     movie,
-    search
+    search,
+    count
   }
 })

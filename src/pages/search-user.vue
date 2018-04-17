@@ -9,19 +9,25 @@
       </div>
       <div class="box">
         <div class="header">
-          用户搜索（暂只支持按用户名搜索）: <br>
+          用户搜索（暂只支持按用户名搜索,支持模糊搜索）: <br>
           <br>
           <el-input v-model="input" :placeholder=placeholder class="searchInput"></el-input>
-          <el-button type="primary" @click="searchUser">搜索</el-button>
+          <el-button type="primary" @click="searchUserMsg">搜索</el-button>
         </div>
-        <div class="tableMsg" v-if="search_user">
-          <!-- <el-table :data="search_user">
-            <el-table-column label="用户名" prop="name"></el-table-column>
-            <el-table-column label="性别" prop="sex"></el-table-column>
-            <el-table-column label="注册时间" prop="regTime"></el-table-column>
-          </el-table> -->
+        <div class="tableMsg" v-show="search_User.code == 1">
+          <el-table :data="search_User.data">
+            <el-table-column label="头像">
+              <template slot-scope="scope">
+                <img :src="scope.row.AVTAR" alt="" style="width:50px;height:50px;border-radius:50%">
+              </template>
+            </el-table-column>
+            <el-table-column label="用户名" prop="USER"></el-table-column>
+            <el-table-column label="性别" prop="SEX"></el-table-column>
+            <el-table-column label="注册时间" prop="REGTIME"></el-table-column>
+            <el-table-column label="身份" prop="ROOT"></el-table-column>
+          </el-table>
         </div>
-        <div v-else>
+        <div v-show='!input' class="tips">
           无数据
         </div>
       </div>
@@ -33,35 +39,15 @@ import { mapGetters } from 'vuex'
 export default {
   data(){
     return{
-      userData:[
-        {
-          id:'1',
-          name:'李宇',
-          sex:'男',
-          regTime:'2017-6-10'
-        },
-        {
-          id:'1',
-          name:'李宇',
-          sex:'女',
-          regTime:'2017-7-10'
-        },
-        {
-          id:'1',
-          name:'李宇',
-          sex:'男',
-          regTime:'2017-8-10'
-        }
-      ],
       input:'',
       placeholder:'请输入用户名',
     }
   },
   computed:{
-    // ...mapGetters('search_user')
+    ...mapGetters(['search_User'])
   },
   methods:{
-    searchUser(){
+    searchUserMsg(){
       this.$store.dispatch('searchUser',{name:this.input})
     }
   }
@@ -78,7 +64,7 @@ export default {
       margin-bottom: 30px;
       width: 100%;
       .searchInput{
-        width: 60%;
+        width: 85%;
       }
     }
     .tableMsg{
@@ -87,5 +73,12 @@ export default {
   }
   .clear{
     clear: both;
+  }
+  .tips{
+    color: #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
   }
 </style>

@@ -14,13 +14,13 @@
           <input type="password" placeholder="Password" class="m-input" v-model="password">
         </div>
       </div>
-      <p class="text-tips">免密码，点击登录按钮进入</p>
+      <p class="text-tips">本系统仅限管理员登录,不支持用户登录注册</p>
       <button class="m-btn sub select-none" @click.prevent="handleLogin" v-loading="isLoging">登录</button>
     </form>
     <div style="margin-top: 50px"></div>
     <p class="text-tips">
       <i class="fa fa-meetup" style="color: #29ABE2"></i>&nbsp;
-      <span class="footer-text">{{appName}} &nbsp;<el-tag size="mini">{{version}}</el-tag> <br>©make by <a href="https://www.github.com/mengdu" target="_blank">{{author}}</a>
+      <span class="footer-text">{{appName}} &nbsp;<br>©make by <a href="https://www.github.com/liyushilezhi" target="_blank">{{author}}</a>
   </span>
     </p>
   </div>
@@ -32,7 +32,7 @@ export default {
   name: 'login',
   data () {
     return {
-      username: 'Administrator',
+      username: 'admin',
       password: '123456',
       isLoging: false,
       author: window.APP_INFO.author,

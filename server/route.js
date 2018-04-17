@@ -21,6 +21,10 @@ router.get('/api/movie/getMovieAll', function(req, res, next) {
 router.get('/api/user/delUser', function(req, res, next) {
   return api.delUser(req, res, next);
 })
+// 删除电影信息
+router.get('/api/movie/delMovie', function(req, res, next) {
+  return api.delMovie(req, res, next);
+})
 // 添加影片信息
 router.get('/api/movie/addMovie', function(req, res, next) {
   return api.addMovie(req, res, next);
@@ -36,5 +40,17 @@ router.get('/api/admin/editAdmin', function(req, res, next) {
 // 修改影片信息
 router.get('/api/movie/editMovie', function(req, res, next) {
   return api.editMovie(req, res, next);
+})
+// 获取管理员信息
+router.get('/api/admin/getAdminMsg', function(req, res, next) {
+  return api.getAdminMsg(req, res, next);
+})
+// 搜索用户信息
+router.get('/api/searchUser', function(req, res, next) {
+  return api.searchUser(req, res, next);
+})
+// 搜索影片信息
+router.get('/api/searchMovie', function(req, res, next) {
+  return api.searchMovie(req, res, next);
 })
 module.exports = router;

@@ -9,7 +9,7 @@
   </div>
 
   <div class="box">
-    <el-form ref="form" :model="form" label-width="80px" width="80%" :rules="rules"> 
+    <el-form ref="form" :model="form" label-width="80px" :rules="rules"> 
     <el-form-item label="影片名" prop="name">
         <el-input v-model="form.name" placeholder="请输入影片名"></el-input>
     </el-form-item>
@@ -165,7 +165,7 @@ export default {
     overflow: auto;
   }
   .box{
-    width: 30%;
+    width: 35%;
     margin: 100px auto 40px auto;
     padding: 40px;
     min-height: 0;

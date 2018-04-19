@@ -88,7 +88,7 @@ export default {
     width: 60%;
     margin: 100px auto auto auto;
     height: 500px;
-    background: url(https://s1.ax1x.com/2018/04/17/CnnfBt.png);
+    background: url(http://oo9xy1zeh.bkt.clouddn.com/wallhaven-141343.jpg);
     background-size: cover;
     border-radius: 6px;
     display: flex;

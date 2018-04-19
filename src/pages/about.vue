@@ -5,7 +5,7 @@
       <p>追剧管家后台管理系统</p>
       <p>Made By <a href="https://github.com/liyushilezhi" target="_blank">是李宇呀丶</a></p>
       <p>Inspire By <a href="https://github.com/mengdu" target="_blank">mengdu</a></p>
-      <p>slogen: 我的心愿是,世界和平</p>
+      <p>slogan: 我的心愿是,世界和平</p>
     </div>
   </div>
 </template>

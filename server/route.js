@@ -1,6 +1,14 @@
 var express = require('express')
 var router = express.Router();
 var api = require('./api')
+// 管理员登录
+router.get('/api/login', function(req, res, next) {
+  return api.login(req, res, next);
+})
+// 获取验证码
+router.get('/api/getCaptcha', function(req, res, next) {
+  return api.getCaptcha(req, res, next);
+})
 // 获取所有用户数量
 router.get('/api/user/getUserCount', function(req, res, next) {
   return api.getUserCount(req, res, next);

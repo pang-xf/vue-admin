@@ -33,17 +33,17 @@ const actions = {
       }, 1000)
     })
   },
-  async logout ({commit}) {
-    // 模拟退出
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        sessionStorage.removeItem('user')
-        sessionStorage.removeItem('token')
-        commit('SET_LOGIN_USER', null)
-        resolve({bool: true})
-      }, 2000)
-    })
-  }
+  // async logout ({commit}) {
+  //   // 模拟退出
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       sessionStorage.removeItem('user')
+  //       sessionStorage.removeItem('token')
+  //       commit('SET_LOGIN_USER', null)
+  //       resolve({bool: true})
+  //     }, 2000)
+  //   })
+  // }
 }
 
 const mutations = {

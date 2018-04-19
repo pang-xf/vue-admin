@@ -9,6 +9,7 @@ import editMovie from './modules/editMovie';
 import movie from './modules/movie';
 import search from './modules/search';
 import count from './modules/count';
+import login from './modules/login';
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     editMovie,
     movie,
     search,
-    count
+    count,
+    login
   }
 })

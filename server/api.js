@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var mysqlConf = require('./db');
-
+var svgCaptcha = require('svg-captcha');
 // 连接数据库
 var pool = mysql.createPool({
   host: mysqlConf.mysql.host,
@@ -193,7 +193,57 @@ var delMovie = function(id){
     })
   })
 };
+//管理员登录
+var login = function(user,pwd){
+  return new Promise((resolve,reject)=>{
+    const sql = `SELECT COUNT(1) as result  FROM USER where USER='${user}' AND PWD='${pwd}' AND ROOT = 0 `
+    pool.getConnection((err, connection) => {
+      connection.query(sql,(err, result) => {
+        resolve(result)
+        connection.release();
+      })
+    })
+  })
+};
 module.exports = {
+  // 管理员登录
+  async login(req, res, next){
+    let pwd = req.query.pwd
+    let user = req.query.user
+    let data = await login(user,pwd)
+    if(data[0].result==0){
+      return res.json({
+        code:'-1',
+        msg:'操作失败',
+      })
+    }
+    res.json({
+      code:'1',
+      msg:'操作成功',
+      token:'4eea90fd-2752-481d-ae67-c75f8641a94a'
+    })
+  },
+  // 获取验证码
+  getCaptcha(req, res, next){
+    var captcha = svgCaptcha.create({  
+      // 翻转颜色  
+      inverse: false,  
+      // 字体大小  
+      fontSize: 36,  
+      // 噪声线条数  
+      noise: 2,  
+      // 宽度  
+      width: 80,  
+      // 高度  
+      height: 30,  
+    });  
+    // 保存到session,忽略大小写  
+    req.session = captcha.text.toLowerCase();  
+    res.cookie('captcha', req.session);
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.write(String(captcha.data));
+    res.end();
+  },
   //获取全部用户数量
   async getUserCount(req, res, next){
     const sql =`SELECT * FROM USER WHERE root = 1`

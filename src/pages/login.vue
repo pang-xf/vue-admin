@@ -1,21 +1,31 @@
 <template>
 <div class="fullscreen">
   <div class="login-box">
-    <div style="text-align: center">
-      <img src="../assets/user.jpg" alt="" class="logo">
+    <div style="text-align: center;">
+      <img src="../assets/user.jpg" alt="" class="logo" style="border-radius:50%;width:80px;height:80px">
     </div>
     <p class="text-tips">你好，欢迎登录影视管家后台</p>
     <form action="" class="login-form">
       <div class="m-list-group">
         <div class="m-list-group-item">
-          <input type="text" placeholder="Username" class="m-input" v-model="username">
+          <input type="text" placeholder="请输入账号" class="m-input" v-model="username">
         </div>
         <div class="m-list-group-item">
-          <input type="password" placeholder="Password" class="m-input" v-model="password">
+          <input type="password" placeholder="请输入密码" class="m-input" v-model="password">
+        </div>
+         <div class="m-list-group-item">
+          <input type="num" placeholder="请输入验证码" class="m-input yzm" v-model="yzm">
+          <div class="yzmCon">
+            <a href="#" @click="editCaptcha">
+              <img src="/api/getCaptcha" alt="" ref="imgYzm">
+            </a>
+          </div>
+          <div class="clear"></div>
         </div>
       </div>
+      <div class="clear"></div>
       <p class="text-tips">本系统仅限管理员登录,不支持用户登录注册</p>
-      <button class="m-btn sub select-none" @click.prevent="handleLogin" v-loading="isLoging">登录</button>
+      <button class="m-btn sub select-none" @click.prevent.stop="handleLogin" v-loading="isLoging">登录</button>
     </form>
     <div style="margin-top: 50px"></div>
     <p class="text-tips">
@@ -27,39 +37,75 @@
 </div>
 </template>
 <script>
-import {mapActions} from 'vuex'
+import {mapActions,mapGetters} from 'vuex'
+import axios from 'axios'
 export default {
   name: 'login',
   data () {
     return {
-      username: 'admin',
-      password: '123456',
+      username: '帅气的管理员',
+      password: '19950809',
+      yzm:'',
       isLoging: false,
       author: window.APP_INFO.author,
       version: window.APP_INFO.version,
-      appName: window.APP_INFO.appName
+      appName: window.APP_INFO.appName,
     }
   },
+  watch:{
+    'login':{
+      handler:function(val){
+        // console.log(val);
+        if(val == 1){
+          this.isLoging = true
+          this.$message.success('登录成功')
+          this.$router.push({name: 'home'})
+          this.isLoging = false
+          return
+        }else{
+          this.isLoging = true
+          this.$message.success('用户名或者密码错误')
+          this.isLoging = false
+          return
+        }
+      },
+      deep:true
+    }
+  },
+  computed:{
+    ...mapGetters(['login'])
+  },
+  mounted(){
+  },
   methods: {
-    ...mapActions(['login']),
+    editCaptcha () {
+      this.$refs.imgYzm.src = '/api/getCaptcha?d='+Math.random()
+    },
     handleLogin () {
       if (!this.username || !this.password) {
         return this.$message.warning('用户名和密码不能为空')
       }
-      this.isLoging = true
-      this.login({
+      let captcha = document.cookie.split('=')[1]
+      if(this.yzm != captcha){
+        return this.$message.warning('验证码错误')
+      }
+      this.$store.dispatch('login2',{
         username: this.username,
         password: this.password
       }).then(res => {
-        this.$message.success('登录成功')
-        this.$router.push({name: 'home'})
-        this.isLoging = false
+        // this.isLoging = true
+        // this.$message.success('登录成功')
+        // this.$router.push({name: 'home'})
+        // this.isLoging = false
       })
     }
   }
 }
 </script>
 <style type="text/css">
+  .clear{
+    clear: both;
+  }
   .m-list-group{
     border-radius: 3px;
     padding: 0;
@@ -69,7 +115,7 @@ export default {
     position: relative;
     display: block;
     padding: 6px 10px;
-    margin-bottom: -1px;
+    margin-bottom: 5px;
     background-color: #fff;
     border: 1px solid #e7ecee;
   }
@@ -85,7 +131,7 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #F4F5F5;
+    background: url(http://oo9xy1zeh.bkt.clouddn.com/wallhaven-644753.png);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -102,7 +148,7 @@ export default {
   }
   .login-box .text-tips{
     text-align: center;
-    color: #909DB7;
+    color: rgb(184, 167, 167);
   }
   .login-box .m-input{
     width: 100%;
@@ -110,6 +156,17 @@ export default {
     border: none;
     outline: none;
     box-sizing: border-box;
+  }
+  .login-box .yzm{
+    width: 70%;
+    float: left;
+  }
+  .login-box .yzmCon{
+    width: 30%;
+    background: rgb(224, 206, 206);
+    color: #fff;
+    float: left;
+    text-align: center;
   }
   .login-box .m-btn{
     font-size: 18px;

@@ -28,9 +28,13 @@
           <m-dropdown-item >
             <router-link to="/editPwd">修改密码</router-link>
           </m-dropdown-item>
-          <!-- <m-dropdown-item disabled>注销</m-dropdown-item> -->
+          <m-dropdown-item >
+            <router-link to="/" disabled>回到追剧管家</router-link>
+          </m-dropdown-item>
           <div class="test-line"></div>
-          <m-dropdown-item name="login">退出账号</m-dropdown-item>
+          <m-dropdown-item>
+            <div @click="logoutAdmin()">退出账号</div>
+          </m-dropdown-item>
         </m-dropdown-panel>
       </m-dropdown>
     </m-nav-item>
@@ -71,7 +75,7 @@
 </m-navbar>
 </template>
 <script type="text/javascript">
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {
   requestFullScreen,
   exitFullscreen
@@ -90,8 +94,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      user: ({user}) => user.user
+    ...mapGetters({
+      user: 'Loginadmin'
     })
   },
   watch: {
@@ -102,9 +106,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getLoginUser', 'logout']),
+    ...mapActions(['getLoginAdmin', 'logout']),
+    logoutAdmin(){
+      console.log('222');
+      this.$router.go('login')
+      this.logout()
+    },
     handleSwitchSide () {
-      this.mini = !this.mini
+      this.mini = !this.mini  
       this.$emit('switch', this.mini)
     },
     handleSwitchScreen () {
@@ -122,7 +131,7 @@ export default {
     }
   },
   created () {
-    this.getLoginUser()
+    this.getLoginAdmin()
     var theme = localStorage.getItem('theme') || 'default'
     this.themeType = theme
   }

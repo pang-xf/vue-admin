@@ -1,122 +1,110 @@
-# vue-element-admin-tpl
 
-基于vue + element-ui开发的后端管理系统模板。
+这是一个追剧网站的后台管理系统。模板参考了 [mengdu](https://github.com/mengdu)的项目，并在其基础上加了后台的功能。前端框架采用的`vue`,ui框架用的是`element-ui`,后台的框架用的`express`,数据库是`mysql`。
 
-+ vue
-+ vue-router
-+ axios
-+ element-ui
-+ nprogress
-+ 使用了 `FontAwesome 4.7.0` 的图标
+主要的功能是对影片资料的展示，影片的增删改查，对用户信息的展示，用户的增删改查，还有管理员自身资料的管理等等。 并且整个管理后台只支持管理员登录，不支持用户登录以及注册，后期如果涉及到更改，会增加权限分配功能，让用户也可以登录，只是管理的权限不同。(不过就针对这个项目而言，貌似不需要)
 
 
+项目地址: [vue-admin](https://github.com/liyushilezhi/vue-admin)
 
-> `src/m` 目录下收藏了些本人工作时开发的一些组件，欢迎使用与提建议；使用方法请看对应的README.md说明文档。
+警告,下面多图预警
 
-> 注：布局采用了 `display:flex` 实现，在IE上可能会出现一些不愉快的事情。
+- 登录页
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419114012.png)
+
+登录页是整个项目的入口,会做用户名密码和验证码的判断，验证码是后台生成的，实现了点击刷新，并且验证码的值保存在cookie当中，方便前端做登录判断
+
+- 首页
+
+登录成功后跳转首页，首页显示了当前注册的总人数和当前收录的总影片数。
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419152727.png)
+
+咳,ui功底不行啊，，，，将就看吧..
+
+- 用户列表
+
+用户列表页支持分页查询，支持对用户信息的修改以及用户的删除操作。
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419152845.png)
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419152947.png)
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153020.png)
+
+- 影片列表
+
+影片列表的功能同用户列表
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153135.png)
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153145.png)
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153154.png)
+
+- 添加影片
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153511.png)
+
+- 搜索
+
+搜索包括用户搜索以及影片搜索，只做了按名称模糊搜索，如果有时间的话可以做全，原理都是很简单的.
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153648.png)
+
+- 设置
+
+设置页可以对管理员的信息进行修改
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153737.png)
+
+- 关于
+
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419153830.png)
 
 
-## 实现组件
 
-+ [按钮组件](src/m/button)
-+ [多选框](src/m/checkbox)
-+ [switch](src/m/switch)
-+ [输入框](src/m/input)
-+ [导航](src/m/navbar)
-+ [dropdown](src/m/dropdown)
-+ [响应式布局](src/m/container)
-+ [加载等待](src/m/loading)
-+ [提示](src/m/alert)
-+ [回到到顶部](src/m/back-top)
-+ [盒子](src/m/box)
-+ [列表组](src/m/list-group)
-+ [虚拟键盘（中/英）](src/m/keyboard)
-+ [虚拟数字键盘](src/m/number-keyboard)
+后台数据库表:
 
+影片数据表: movie
 
-## 页面
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419155133.png)
 
-+ [登录](http://vadmin.lanyueos.com/login)
-+ [注册](http://vadmin.lanyueos.com/register)
-+ [404](http://vadmin.lanyueos.com/404)
-+ [500](http://vadmin.lanyueos.com/500)
+用户数据表: user
 
-+ [cnode](http://vadmin.lanyueos.com/cnode)
+![](http://oo9xy1zeh.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180419155118.png)
 
+> 安装
 
-## 截图
+`git clone git@github.com:liyushilezhi/vue-admin.git`
 
-![截图](2018-02-08_231542.png)
+`cd vue-admin`
 
-![截图](20180117171004.png)
+`cnpm i`
 
-![截图](20180117170917.png)
+开启node后台服务
 
+`npm start`  
 
-## 关于打包
+`npm run dev`
 
+上面的操作都是基于你有数据库的情况下。
 
-对于打包，如果你使用git管理，推荐使用 `npm run publish` 命令进行打包，这样的的话打包前会执行更新 `package.json` 中的version字段；
-打包时会挂载 `APP_INFO` 对象到 `window` 对象上，在vue组件中可以直接 `window.APP_INFO` 访问版本信息。
+在本地新建数据库，结构参照上面的数据表,并且配置`server`文件夹下的`db.js`
 
-**window.APP_INFO**
-
-```js
-// window.APP_INFO对象大致内容
-
-{
-  projectName: pkg.name,
-  version: pkg.version,
-  description: pkg.description,
-  author: pkg.author,
-  appName: pkg.app && pkg.app.name || pkg.appName,
-  dependencies: pkg.dependencies,
-  engines: pkg.engines,
-  license: pkg.license,
-
-  // 如果是npm run publish打包会存在下面两个字段
-  // 打包时间
-  date: '',
-  // 本次打包MD5
-  md5: ''
+```javascript
+// 数据库连接配置
+module.exports = {
+  mysql: {
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database: 'moviedb',
+    port: '3306'
+  }
 }
-
-```
-> 为什这么做？
-> 方便知道谁，什么时候打的包
-
-
-## 案例
-
-1、[**浙中牛牛**（预览版）](http://www.lanyueos.com:3003) 账号：admin 密码：123456 （请不要乱改数据）
-
-![浙中牛牛 预览版](20180117175701.png)
-
-
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+这时候再执行 `npm start`  `npm run dev`即可
+
+我的博客: [前端开发小哥](http://neverlove.me)

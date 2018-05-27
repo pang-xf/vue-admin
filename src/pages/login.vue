@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       username: '帅气的管理员',
-      password: '19950809',
+      password: '',
       yzm:'',
       isLoging: false,
       author: window.APP_INFO.author,

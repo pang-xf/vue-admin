@@ -108,7 +108,6 @@ export default {
   methods: {
     ...mapActions(['getLoginAdmin', 'logout']),
     logoutAdmin(){
-      console.log('222');
       this.$router.go('login')
       this.logout()
     },

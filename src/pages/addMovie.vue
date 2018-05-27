@@ -136,7 +136,17 @@ export default {
                 {
                     form:this.$refs[form].model
                 }
+            
             ); //触发action
+            this.$alert('影片添加成功', '添加成功', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    this.$message({
+                    type: 'info',
+                    message: `新的影片添加成功`
+                    })
+                }
+            })
           } else {
             console.log('error submit!!');
             return false;

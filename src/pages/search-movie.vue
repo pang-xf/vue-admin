@@ -30,10 +30,10 @@
             <el-table-column label="简介" prop="PROFILE" id="intro"></el-table-column>
           </el-table>
         </div>
-        <div v-show='!input' class="tips">
+        <!-- <div v-show='!input' class="tips">
           请输入查询条件
-        </div>
-        <div v-show='search_Movie.code == -1 && input' class="tips">
+        </div> -->
+        <div v-show='search_Movie.code == -1' class="tips">
           没有这条数据
         </div>
       </div>
@@ -55,6 +55,13 @@ export default {
   },
   methods:{
     searchUser(){
+      if(this.input==''){
+        this.$notify.error({
+          title: '检索错误',
+          message: '检索内容不能为空'
+        });
+        return
+      }
       this.$store.dispatch('searchMovie',{name:this.input})        
     },
   }

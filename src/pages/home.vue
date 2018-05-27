@@ -85,10 +85,10 @@ export default {
 </script>
 <style type="text/css" scoped lang="less">
   .box{
-    width: 60%;
-    margin: 100px auto auto auto;
-    height: 500px;
-    background: url(http://oo9xy1zeh.bkt.clouddn.com/wallhaven-141343.jpg);
+    width: 100%;
+    margin: 20px auto auto auto;
+    height: 700px;
+    background: url(http://oo9xy1zeh.bkt.clouddn.com/wallhaven-649048.jpg);
     background-size: cover;
     border-radius: 6px;
     display: flex;

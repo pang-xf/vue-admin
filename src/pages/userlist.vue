@@ -78,7 +78,7 @@ export default {
       },
       rules:{
         name:[
-            {required: true, message: '请输入影片名', trigger: 'blur' },
+            {required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
         ],
         imgUrl:[
@@ -113,9 +113,16 @@ export default {
     editorRow(index,rows){
       this.dialogFormVisible  = !this.dialogFormVisible;
       this.id = index
-      this.form.name = this.members[index-2].USER
-      this.form.sex = this.members[index-2].SEX
-      this.form.imgUrl = this.members[index-2].AVTAR
+      let userIndex = Math.floor(this.id-10*(this.curPage-1))
+      if(index<10){
+         this.form.name = this.members[index-2].USER
+        this.form.sex = this.members[index-2].SEX
+        this.form.imgUrl = this.members[index-2].AVTAR
+      }else{
+        this.form.name = this.members[userIndex-2].USER
+        this.form.sex = this.members[userIndex-2].SEX
+        this.form.imgUrl = this.members[userIndex-2].AVTAR
+      }
     },
     submitForm(form){
       // 做到这里了 this.$refs[form].model 拿到了表单得值 现在需要返回给后台做操作
@@ -143,6 +150,7 @@ export default {
     },
     deleteRow(index, rows) {
       //每次删除重新获取页码
+      console.log(index);
       this.curPage = this.computedCurPage(index,rows)
       this.$confirm('将要删除该用户, 是否继续?', '警告', {
           confirmButtonText: '确定',

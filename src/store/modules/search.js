@@ -20,7 +20,6 @@ const mutations = {
 
 const actions = {
     searchUser({commit},params){
-      console.log(params);
       axios.get("/api/searchUser",{
         params:{
           name:params.name,
@@ -53,6 +52,12 @@ const actions = {
         }
       })
       .then(res=>{
+        console.log(res);
+        if(res.code == -1){
+          let payload = res;  
+          commit("SEARCH_MOVIE",payload)  
+          return
+        }
         for(let i=0;i<res.data.length;i++){
           if(res.data[i].STATE == 0){
             res.data[i].STATE = '连载'

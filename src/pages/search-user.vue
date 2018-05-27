@@ -27,7 +27,7 @@
             <el-table-column label="身份" prop="ROOT"></el-table-column>
           </el-table>
         </div>
-        <div v-show='!input' class="tips">
+        <div v-show='search_User.code == -1' class="tips">
           无数据
         </div>
       </div>

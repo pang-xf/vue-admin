@@ -35,7 +35,7 @@
 </div>
 </template>
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
+import { mapGetters,mapActions } from 'vuex'
 export default {
   data(){
     var checkPwd = (rule, value, callback) => {
@@ -70,6 +70,11 @@ export default {
     })
   },
   methods:{
+    ...mapActions(['getLoginAdmin', 'logout']),
+    logoutAdmin(){
+      this.$router.go('login')
+      this.logout()
+    },
     submitForm(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -85,6 +90,7 @@ export default {
     },
     handlr(){
       this.$store.dispatch('handlrPwdStatus')
+      this.logoutAdmin()
       this.form.pass = ''
       this.form.checkPass = ''
     }
